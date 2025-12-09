@@ -1,9 +1,11 @@
 <?php
 
-require_once("LesPaul.php");
+require_once("Guitarra.php");
 
-class Stratocaster{
+class Violao{
     
-    private string $corda;
+    private string $tipoCorda;
+    private string $tipoViolao;
+    
 
 }
