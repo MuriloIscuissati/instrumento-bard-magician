@@ -13,9 +13,11 @@ class Guitarra extends InstrumentoCorda{
 
     public function __toString()
     {
-        $d = " Id : " . $this->id . " \n Cordas quantidade: " . $this->qtdCorda . "\n Escala : " . $this->escala . "\n modelo : " . $this->modelo . "\n Fabricante : " . $this->fabricante . "\n" . "Qtd Casas: " . $this->qtdCasas . "Qtd Captadores: " . $this->qtdCaptadores . "\n";
+        $dados = parent::__toString();
+        $dados .= $this->getQtdCasas() . " | ";
+        $dados .= $this->getQtdCaptadores();
 
-        return $d;
+        return $dados;
     }
 
 
