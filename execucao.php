@@ -50,6 +50,9 @@ do {
                 default:
                     print "Opção inválida.\n";
             }
+
+
+               
             
             if($instrumento != null){
                 $instrumento->setQtdCorda(readline("Quantas cordas tem o seu instrumento: "));
@@ -59,7 +62,7 @@ do {
                 $instrumento->setQtdCasas(readline("Quantas casas tem seu instrumento: "));
                 $instrumento->setQtdCaptadores(readline("Quantos captadores tem seu instrumento: "));
 
-                //Persistir os Dados
+                // Persistir os Dados
                 $dao = new InstrumentoCordaDao();
                 $dao->cadastrarInstrumento($instrumento);
                 print "Instrumento cadastrado com sucesso.\n";
@@ -70,20 +73,39 @@ do {
         case 2:
             //Listar
             $dao = new InstrumentoCordaDao();
+
             $instrumentos = $dao->listar();
 
             foreach($instrumentos as $i){
-                print $i . "\n";
+                print "$i\n";
             }
+
             break;
 
         case 3:
             //Buscar por ID
+            $dao = new InstrumentoCordaDao();
+
+            $instrumentoId = readline("Digite o id do instrumento que deseja buscar: ");
+
+            print $dao->buscarPorId($instrumentoId);
 
             break;
 
         case 4:
             //Excluir Instrumento
+            $dao = new InstrumentoCordaDao();
+
+            $instrumentos = $dao->listar();
+
+            foreach($instrumentos as $i){
+                print "$i\n";
+            }
+
+            print "\n";
+            $instrumentoId = readline("Digite o id do instrumento que deseja excluir: ");
+
+            $dao->deletarInstrumento($idInstrumento);
 
             break;
 
