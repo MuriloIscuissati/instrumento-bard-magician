@@ -17,7 +17,7 @@ class InstrumentoCordaDao{
         $conn = Conexao::getConexao();
         $stmt = $conn->prepare($sql);
 
-        if($instrumentoCorda instanceof Guitarra){
+        if($instrumentoCorda instanceof Baixo){
             $stmt->execute(array(
                                 $instrumentoCorda->getTipo(),
                                 $instrumentoCorda->getQtdCorda(),
@@ -28,7 +28,7 @@ class InstrumentoCordaDao{
                                 $instrumentoCorda->getQtdCaptadores(),
                                 NULL,
                                 NULL,
-                                NULL,
+                                $instrumentoCorda->getTipoCaptador(),
                             ));
         }
 
@@ -46,7 +46,7 @@ class InstrumentoCordaDao{
                                 NULL));
         }
 
-        elseif($instrumentoCorda instanceof Baixo){
+        elseif($instrumentoCorda instanceof Guitarra){
             $stmt->execute(array(
                                 $instrumentoCorda->getTipo(),
                                 $instrumentoCorda->getQtdCorda(),
@@ -57,7 +57,7 @@ class InstrumentoCordaDao{
                                 $instrumentoCorda->getQtdCaptadores(),
                                 NULL,
                                 NULL,
-                                $instrumentoCorda->getTipoCaptador()));
+                                NULL));
         }
     }
 
@@ -74,33 +74,61 @@ class InstrumentoCordaDao{
         return $instrumentos;
     }
 
+    public function buscarPorId($instrumentoId){
+        $sql = "SELECT * FROM instrumentos where id = ?";
+
+        $conn = Conexao::getConexao();
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute([$instrumentoId]);
+
+        $dados = $stmt->fetchAll();
+
+        $instrumentos = $this->map($dados);
+
+        if(!empty($instrumentos)){
+            return $instrumentos[0];
+        }
+
+        return null;
+    }
+
+
+    public function deletarInstrumento($instrumentoId){
+        $sql = "DELETE FROM instrumentos where id = ?";
+        $conn = Conexao::getConexao();
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$instrumentoId]);
+    }
     private function map($dados){
         $instrumentos = array();
 
         foreach($dados as $d){
             $instrumento = null;
-
             if($d['tipo'] == 'G'){
                 $instrumento = new Guitarra();
+                $instrumento->setQtdCasas($d['qtdCasas'])->setQtdCaptadores($d['qtdCaptadores']);
             }
 
-            elseif($d['tipo'] == 'V'){
-                $instrumento = new Violao();
-                $instrumento->setTipoCorda($d['tipoCorda']);
-                $instrumento->setTipoViolao($d['tipoViolao']);
-            }
-
-            else{
+            elseif($d['tipo'] == 'B'){
                 $instrumento = new Baixo();
                 $instrumento->setTipoCaptador($d['tipoCaptador']);
             }
 
-            $instrumento->setQtdCorda($d['qtdCorda'])->setEscala($d['escala'])->setModelo($d['modelo'])->setFabricante($d['fabricante']);
-            $instrumento->setQtdCasas($d['qtdCasas'])->setQtdCaptadores($d['qtdCaptadores']);
+            elseif($d['tipo'] == 'V'){
+                $instrumento = new Violao();
+                $instrumento->setTipoViolao($d['tipoViolao'])->setTipoCorda($d['tipoCorda']);
+            }
 
-            array_push($instrumentos, $instrumento);
+            $instrumento->setId($d['id'])->setQtdCorda($d['qtdCorda'])->setEscala($d['escala'])->setModelo($d['modelo'])->setFabricante($d['fabricante']);
+
+            array_push($instrumentos, $instrumento);        
         }
 
         return $instrumentos;
     }
+
+    
 }
