@@ -12,6 +12,9 @@ require_once("dao/InstrumentoCordaDao.php");
 // exit;
 
 do {
+
+    print "\n\n----------\n\n";
+    
     print "1)Cadastrar Instrumento \n2)Listar Instrumentos \n3)Buscar por ID \n4)Excluir Instrumento \n0)Encerrar Programa: ";
     $resposta = readline();
 
@@ -88,7 +91,13 @@ do {
 
             $instrumentoId = readline("Digite o id do instrumento que deseja buscar: ");
 
-            print $dao->buscarPorId($instrumentoId);
+            if($dao->buscarPorId($instrumentoId) ){
+                print $dao->buscarPorId($instrumentoId);
+            }else {
+                print "Id não existente ou inválido \n";
+            }
+
+            
 
             break;
 
@@ -96,6 +105,7 @@ do {
             //Excluir Instrumento
             $dao = new InstrumentoCordaDao();
 
+            
             $instrumentos = $dao->listar();
 
             foreach($instrumentos as $i){
@@ -105,7 +115,16 @@ do {
             print "\n";
             $instrumentoId = readline("Digite o id do instrumento que deseja excluir: ");
 
-            $dao->deletarInstrumento($idInstrumento);
+            if($dao->buscarPorId($instrumentoId)){
+                $dao->deletarInstrumento($instrumentoId);
+                print "Instrumento deletado com sucesso heheheh aura+ego \n";
+            }
+
+            else{
+                print "Instrumento não encontrado aura-ego \n";
+            }
+
+            
 
             break;
 
