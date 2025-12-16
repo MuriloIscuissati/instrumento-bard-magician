@@ -12,9 +12,10 @@ class Baixo extends Guitarra{
 
     public function __toString()
     {
-        $d = " Id : " . $this->id . " \n Cordas quantidade: " . $this->qtdCorda . "\n Escala : " . $this->escala . "\n modelo : " . $this->modelo . "\n Fabricante : " . $this->fabricante . "\n" . "Qtd Casas: " . $this->qtdCasas . "Qtd Captadores: " . $this->qtdCaptadores . "\n Tipo Captador: " . $this->tipoCaptador;
+        $dados = InstrumentoCorda::__toString();
+        $dados .= $this->getTipoCaptador();
 
-        return $d;
+        return $dados;
     }
 
     /**
