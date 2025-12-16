@@ -10,11 +10,18 @@ abstract class InstrumentoCorda{
     protected string $fabricante;
 
    
-
-    public abstract function __toString();
     public abstract function getTipo();
 
+    public function __toString(){
+        $dados = $this->getId() . " | ";
+        $dados .= $this->getQtdCorda() . " | ";
+        $dados .= $this->getEscala() . " | ";
+        $dados .= $this->getModelo() . " | ";
+        $dados .= $this->getFabricante() . " | ";
+        
 
+        return $dados;
+    }
     //Gets & Sets
     
 
